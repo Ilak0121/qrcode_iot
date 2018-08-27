@@ -1,3 +1,5 @@
+## this is the test code that is written on other website
+## I brought this source code from https://www.learnopencv.com/barcode-and-qr-code-scanner-using-zbar-and-opencv/
 #from PIL import Image
 import pyzbar.pyzbar as pyzbar
 import numpy as np
