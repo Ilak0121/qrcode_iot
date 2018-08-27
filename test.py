@@ -28,9 +28,13 @@ def display(im, decodedObjects):
 
         for j in range(0,n):
             cv2.line(im,hull[j],hull[(j+1)%n],(255,0,0),3)
-    sv2.imshow(
+    cv2.imshow("Results",im)
+    cv2.waitKey(0)
 
-constructor()
-a=decode(cv2.imread('./code.png'))
-print(a)
-destructor()
+def Main():
+    im=cv2.imread('code.png')
+    decodedObjects=decode(im)
+    display(im,decodedObjects)
+
+if __name__ == '__main__':
+    Main()
