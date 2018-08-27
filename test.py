@@ -10,7 +10,7 @@ def decode(im):
     #print results
     for obj in decodedObjects:
         print('Type : ',obj.type)
-        print('Data : ',obj.data,'\n')
+        print('Data : ',obj.data.decode('utf-8'),'\n')
     return decodedObjects
 
 #display barcode and QR code location
