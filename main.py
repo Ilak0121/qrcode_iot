@@ -1,4 +1,7 @@
 import qrscan
+import pymysql
+import os
+import sys
 
 def option_print():
     print("---this is the qr code scanning IOT program---")
@@ -12,12 +15,33 @@ def option_print():
     print("| 5.check the balance of user                |")
     print("----------------------------------------------")
 
+def sql_test(passwd):
+    #connection to MySQL
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
+    curs = conn.cursor()
+    
+    sql="select * from qr_data;"
+    curs.execute(sql)
+
+    #Data Fetch
+    rows = curs.fetchall()
+    print(rows)
+    conn.close()
+
+def readpasswd():
+    f = open("./pass.txt",'r')
+    passwd = f.readlines()
+    f.close()
+    return passwd
 
 if __name__ == "__main__":
-
+    os.system('clear')
+    passwd = readpasswd()
     option_print()
     option = input("select option>> ")
 
-    if choice == '1':
+    if option == '1':
         qrscan.qr_scanning()
+    elif option == '2':
+        sql_test(passwd)
 
