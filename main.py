@@ -10,21 +10,27 @@ def readpasswd():
     return passwd
 
 def option_print():
+    print("----------------------------------------------")
     print("---this is the qr code scanning IOT program---")
     print("----------------------------------------------")
     print("| 0.To exist this Program                    |")
     print("| 1.Start the scanning                       |")
     print("| 2.List of stocks                           |")
     print("| 3.Adjust the quantity                      |")
-    print("-------------still developing-----------------")
     print("| 4.Options of recipe                        |")
-    print("| 5.check the balance of user                |")
+    print("-------------still developing-----------------")
+    print("----------------------------------------------")
+    print("| 5.check the nutrition balance of owner     |")
+    print("| 6.Possible Recipes                         |")
     print("----------------------------------------------")
 
-def initializing():
+def initing(): #initializing of auto increment
+    sql = "alter table qr_data auto_increment =1;"
+    curs.execute(sql)
+    conn.commit()
 
 
-def sql_test():
+def sql_list():
     #sql="select {},{},{},{} from qr_data;".format('Id','Name','Date_limit','Weight')
     sql="select * from qr_data;"
     curs.execute(sql)
@@ -33,14 +39,12 @@ def sql_test():
     rows = curs.fetchall()
     for row in rows:
         print(row)
-    conn.close()
 
 def sql_insert(name, date_limit, weight, company=None):
 
     sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
     curs.execute(sql,(name,date_limit,weight,company))
     conn.commit()
-    conn.close()
 
 
 if __name__ == "__main__":
@@ -55,10 +59,12 @@ if __name__ == "__main__":
     option = input("select option>> ")
 
     if option == '1':
-        qrscan.qr_scanning()
-    elif option == '2':
-        sql_test()
-    elif option == '3':
+        #qrscan.qr_scanning()
         sql_insert("chocopi","2019-09-09",14)
-    else:
-        exit()
+    elif option == '2': #show the lists
+        sql_list()
+    elif option == '3': #adjust the quantity
+        print("hi")
+    elif option == '4':
+        initing()
+    conn.close()
