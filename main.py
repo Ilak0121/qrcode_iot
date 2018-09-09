@@ -21,11 +21,10 @@ def option_print():
     print("| 5.check the balance of user                |")
     print("----------------------------------------------")
 
-def sql_test(passwd):
-    #connection to MySQL
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
-    curs = conn.cursor()
-    
+def initializing():
+
+
+def sql_test():
     #sql="select {},{},{},{} from qr_data;".format('Id','Name','Date_limit','Weight')
     sql="select * from qr_data;"
     curs.execute(sql)
@@ -38,25 +37,28 @@ def sql_test(passwd):
 
 def sql_insert(name, date_limit, weight, company=None):
 
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
-    cursor = conn.cursor()
-
     sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
-    cursor.execute(sql,(name,date_limit,weight,company))
+    curs.execute(sql,(name,date_limit,weight,company))
     conn.commit()
     conn.close()
 
 
 if __name__ == "__main__":
-    os.system('clear')
+    #connecting to mysql
     passwd = readpasswd()
+
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
+    curs = conn.cursor()
+    
+    os.system('clear')
     option_print()
     option = input("select option>> ")
 
     if option == '1':
         qrscan.qr_scanning()
     elif option == '2':
-        sql_test(passwd)
+        sql_test()
     elif option == '3':
+        sql_insert("chocopi","2019-09-09",14)
     else:
         exit()
