@@ -3,6 +3,12 @@ import pymysql
 import os
 import sys
 
+def readpasswd():
+    f = open("./pass.txt",'r')
+    passwd = f.readlines()
+    f.close()
+    return passwd
+
 def option_print():
     print("---this is the qr code scanning IOT program---")
     print("----------------------------------------------")
@@ -20,19 +26,26 @@ def sql_test(passwd):
     conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
     curs = conn.cursor()
     
+    #sql="select {},{},{},{} from qr_data;".format('Id','Name','Date_limit','Weight')
     sql="select * from qr_data;"
     curs.execute(sql)
 
     #Data Fetch
     rows = curs.fetchall()
-    print(rows)
+    for row in rows:
+        print(row)
     conn.close()
 
-def readpasswd():
-    f = open("./pass.txt",'r')
-    passwd = f.readlines()
-    f.close()
-    return passwd
+def sql_insert(name, date_limit, weight, company=None):
+
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
+    cursor = conn.cursor()
+
+    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
+    cursor.execute(sql,(name,date_limit,weight,company))
+    conn.commit()
+    conn.close()
+
 
 if __name__ == "__main__":
     os.system('clear')
@@ -44,4 +57,6 @@ if __name__ == "__main__":
         qrscan.qr_scanning()
     elif option == '2':
         sql_test(passwd)
-
+    elif option == '3':
+    else:
+        exit()
