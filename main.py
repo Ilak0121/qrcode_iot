@@ -40,13 +40,6 @@ def sql_list():
     for row in rows:
         print(row)
 
-def sql_insert(name, date_limit, weight, company=None):
-
-    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
-    curs.execute(sql,(name,date_limit,weight,company))
-    conn.commit()
-
-
 if __name__ == "__main__":
     #connecting to mysql
     passwd = readpasswd()
@@ -59,7 +52,7 @@ if __name__ == "__main__":
     option = input("select option>> ")
 
     if option == '1':
-        #qrscan.qr_scanning()
+        qrscan.qr_scanning()
         sql_insert("chocopi","2019-09-09",14)
     elif option == '2': #show the lists
         sql_list()

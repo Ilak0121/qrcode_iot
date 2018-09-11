@@ -5,8 +5,28 @@ import datetime
 import imutils
 import time
 import cv2
+import pymysql
+import os
+import sys
+
+def readpasswd():
+    f = open("./pass.txt","r")
+    passwd=f.readlines()
+    f.close()
+    return passwd
+
+
+def sql_insert(name, date_limit, weight, company=None):
+    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
+    curs.execute(sql,(name,date_limit,weight,company))
+    conn.commit()
 
 def qr_scanning():
+
+    passwd = readpasswd()
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[0][:-1],db='qr_data',charset='utf8')
+    curs = conn.cursor()
+
     print("[INFO] starting video stream...")
 
     #initialize the video stream and allow the camera sensor to warm up
@@ -38,6 +58,7 @@ def qr_scanning():
     print("[INFO] quiting...")
     cv2.destroyAllWindows()
     stream.stop()
+    conn.close()
 
 if __name__ == "__main__":
     qr_scanning()
