@@ -22,10 +22,11 @@ def sql_insert(name, date_limit, weight, company=None):
     conn.commit()
 
 def qr_scanning():
-
     passwd = readpasswd()
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[0][:-1],db='qr_data',charset='utf8')
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
     curs = conn.cursor()
+    
+    qrData =set()
 
     print("[INFO] starting video stream...")
 
@@ -48,12 +49,29 @@ def qr_scanning():
 
             text = "{} ({})".format(barcodeData,barcodeType)
             cv2.putText(frame,text,(x,y-10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
+            qrData.add(barcodeData) # add qr_code data to set.
 
 
         cv2.imshow("Barcode Scanner",frame)
         key = cv2.waitKey(1) &0xFF
         if key == ord("q"):
             break
+
+    listData = list(qrData) #change set data to list data
+    tuples=[] # list data that will have tuples of qr_code data
+
+    for lists in listData:
+        tuples.append(eval(lists)) #making string to tuple
+
+    #data inserting to database
+    for i in range(len(tuples)):
+        #for j in range(len(tuples[i])):
+        #    print(tuples[i][j])
+
+        if len(tuples[i]) ==3:
+            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2])
+        elif len(tuples[i]) ==4:
+            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
 
     print("[INFO] quiting...")
     cv2.destroyAllWindows()

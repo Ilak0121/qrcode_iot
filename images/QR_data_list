@@ -1,0 +1,10 @@
+format:
+(Name,Date_limit,Weight,Company)
+
+e.g.
+("banana","2018-09-20","13","Dusan")
+("apple","2018-09-25","16","Riot")
+("gum","2019-09-09","4")
+("cat","2093-01-01,"35","petshop")
+("Coke","2019-09-09"m,"15","Coka-cola")
+

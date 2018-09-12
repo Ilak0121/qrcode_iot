@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     if option == '1':
         qrscan.qr_scanning()
-        sql_insert("chocopi","2019-09-09",14)
+      #  sql_insert("chocopi","2019-09-09",14)
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
