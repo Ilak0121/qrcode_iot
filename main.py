@@ -24,7 +24,9 @@ def option_print():
     print("| 6.Possible Recipes                         |")
     print("----------------------------------------------")
 
-def initing(): #initializing of auto increment
+def initing(): 
+    #initializing of auto increment
+    #this function must be execute after delete of sql.
     sql = "alter table qr_data auto_increment =1;"
     curs.execute(sql)
     conn.commit()
@@ -40,24 +42,36 @@ def sql_list():
     for row in rows:
         print(row)
 
-if __name__ == "__main__":
-    #connecting to mysql
-    passwd = readpasswd()
-
-    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
-    curs = conn.cursor()
-    
-    os.system('clear')
-    option_print()
-    option = input("select option>> ")
-
+def main_process(option):
     if option == '1':
         qrscan.qr_scanning()
-      #  sql_insert("chocopi","2019-09-09",14)
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
         print("hi")
     elif option == '4':
         initing()
+    else:
+        print("[INFO] program exiting...")
+        return 1
+    return 0
+
+if __name__ == "__main__":
+    #connecting to mysql
+    passwd = readpasswd()
+    conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
+    curs = conn.cursor()
+
+    while True:
+        os.system('clear')
+        option_print()
+        option = input("select option>> ")
+        result = main_process(option)    
+        if result == 1:
+            break
+        input()
+
     conn.close()
+
+
+    
