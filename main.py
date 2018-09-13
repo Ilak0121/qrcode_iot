@@ -32,7 +32,20 @@ def sql_initing():
     conn.commit()
 
 def sql_update():
-    print()
+    os.system('clear')
+    sql_list()
+    print("\n-----------------------------------------------------------")
+    try:
+        index = input("input index want to change >> ")
+        col = input("input name want to change >> ")
+        data = input("value want to change >> ")
+        sql = "update qr_data set {} = {} where id={};".format(col,data,index)
+        curs.execute(sql)
+    except:
+        print("wrong input name... exiting...")
+        exit()
+    else:
+        conn.commit()
 
 def sql_delete(index):
     sql = "delete from qr_data where id={};".format(index)
@@ -46,6 +59,7 @@ def sql_delete(index):
     
 
 def sql_list():
+    os.system('clear')
     sql="select {},{},{},{},{},{} from qr_data;".format('id','Name','Date_limit','Date_enter','Company','Weight')
     #sql="select * from qr_data;"
     curs.execute(sql)
@@ -56,7 +70,7 @@ def sql_list():
     print("\n-----------------------------------------------------------")
     print("-----------list of stocks in refrigerator------------------")
     print("-----------------------------------------------------------")
-    print("|format: index| name / date_limit / date_enter / company / weight|")
+    print("|format: index| Name / Date_limit / Date_enter / Company / Weight|")
     print("-----------------------------------------------------------")
     for row in rows:
         line = " | "
@@ -78,7 +92,7 @@ def main_process(option):
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
-        sql_delete(3)
+        sql_update()
     elif option == '4':
         sql_initing()
     elif option == '11':
