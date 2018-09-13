@@ -33,18 +33,34 @@ def initing():
 
 
 def sql_list():
-    #sql="select {},{},{},{} from qr_data;".format('Id','Name','Date_limit','Weight')
-    sql="select * from qr_data;"
+    sql="select {},{},{},{},{} from qr_data;".format('Name','Date_limit','Date_enter','Company','Weight')
+    #sql="select * from qr_data;"
     curs.execute(sql)
 
     #Data Fetch
     rows = curs.fetchall()
+    rows = list(rows)
+    print("\n-----------------------------------------------------------")
+    print("-----------list of stocks in refrigerator------------------")
+    print("-----------------------------------------------------------")
+    print("|format: name / date_limit / date_enter / company / weight|")
+    print("-----------------------------------------------------------")
+    j=0
     for row in rows:
-        print(row)
+        line = " | "
+        for i in range(len(row)):
+            if i is len(row)-1 :
+                line = line + str(row[i])
+            elif i is 0:
+                j=j+1
+                line = str(j)+line + str(row[i])+" / "
+            else:
+                line = line + str(row[i])+" / "
 
+        print(line)
 def main_process(option):
     if option == '1':
-        qrscan.qr_scanning()
+        qrscan.qr_scanning()#find qr_code and insert data to db
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
@@ -65,7 +81,7 @@ if __name__ == "__main__":
     while True:
         os.system('clear')
         option_print()
-        option = input("select option>> ")
+        option = input("select option('Enter' to close)>> ")
         result = main_process(option)    
         if result == 1:
             break

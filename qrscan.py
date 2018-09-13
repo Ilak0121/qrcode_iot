@@ -64,14 +64,14 @@ def qr_scanning():
         tuples.append(eval(lists)) #making string to tuple
 
     #data inserting to database
-    for i in range(len(tuples)):
+    #for i in range(len(tuples)):
         #for j in range(len(tuples[i])):
         #    print(tuples[i][j])
 
-        if len(tuples[i]) ==3:
-            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2])
-        elif len(tuples[i]) ==4:
-            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
+        #if len(tuples[i]) ==3:
+            #sql_insert(tuples[i][0],tuples[i][1],tuples[i][2])
+        #elif len(tuples[i]) ==4:
+            #sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
 
     print("[INFO] quiting...")
     cv2.destroyAllWindows()
