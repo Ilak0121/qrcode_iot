@@ -17,14 +17,15 @@ def readpasswd():
 
 
 def sql_insert(name, date_limit, weight, company=None):
-    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
-    curs.execute(sql,(name,date_limit,weight,company))
-    conn.commit()
-
-def qr_scanning():
     passwd = readpasswd()
     conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
     curs = conn.cursor()
+    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
+    curs.execute(sql,(name,date_limit,weight,company))
+    conn.commit()
+    conn.close()
+
+def qr_scanning():
     
     qrData =set()
 
@@ -64,19 +65,18 @@ def qr_scanning():
         tuples.append(eval(lists)) #making string to tuple
 
     #data inserting to database
-    #for i in range(len(tuples)):
-        #for j in range(len(tuples[i])):
-        #    print(tuples[i][j])
+    for i in range(len(tuples)):
+        for j in range(len(tuples[i])):
+            print(tuples[i][j])
 
-        #if len(tuples[i]) ==3:
-            #sql_insert(tuples[i][0],tuples[i][1],tuples[i][2])
-        #elif len(tuples[i]) ==4:
-            #sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
+        if len(tuples[i]) ==3:
+            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2])
+        elif len(tuples[i]) ==4:
+            sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
 
     print("[INFO] quiting...")
     cv2.destroyAllWindows()
     stream.stop()
-    conn.close()
 
 if __name__ == "__main__":
     qr_scanning()

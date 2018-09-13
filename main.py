@@ -81,6 +81,9 @@ def main_process(option):
         sql_delete(3)
     elif option == '4':
         sql_initing()
+    elif option == '11':
+        index = input("index>>")
+        sql_delete(index)
     else:
         print("[INFO] program exiting...")
         return 1
