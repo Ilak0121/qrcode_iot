@@ -24,16 +24,29 @@ def option_print():
     print("| 6.Possible Recipes                         |")
     print("----------------------------------------------")
 
-def initing(): 
+def sql_initing(): 
     #initializing of auto increment
     #this function must be execute after delete of sql.
     sql = "alter table qr_data auto_increment =1;"
     curs.execute(sql)
     conn.commit()
 
+def sql_update():
+    print()
+
+def sql_delete(index):
+    sql = "delete from qr_data where id={};".format(index)
+    curs.execute(sql)
+    option = input("Are you sure?<Y/n>:")
+    if option == 'n' or option == 'N':
+        conn.commit()
+
+    sql_initing()
+
+    
 
 def sql_list():
-    sql="select {},{},{},{},{} from qr_data;".format('Name','Date_limit','Date_enter','Company','Weight')
+    sql="select {},{},{},{},{},{} from qr_data;".format('id','Name','Date_limit','Date_enter','Company','Weight')
     #sql="select * from qr_data;"
     curs.execute(sql)
 
@@ -43,30 +56,31 @@ def sql_list():
     print("\n-----------------------------------------------------------")
     print("-----------list of stocks in refrigerator------------------")
     print("-----------------------------------------------------------")
-    print("|format: name / date_limit / date_enter / company / weight|")
+    print("|format: index| name / date_limit / date_enter / company / weight|")
     print("-----------------------------------------------------------")
-    j=0
     for row in rows:
         line = " | "
         for i in range(len(row)):
-            if i is len(row)-1 :
+            if str(row[i]) == 'None':
+                line = line + "    " + "/ " 
+            elif i is len(row)-1 :
                 line = line + str(row[i])
             elif i is 0:
-                j=j+1
-                line = str(j)+line + str(row[i])+" / "
+                line = str(row[i])+line
             else:
-                line = line + str(row[i])+" / "
+                line = line + str(row[i])+"/ "
 
         print(line)
+
 def main_process(option):
     if option == '1':
         qrscan.qr_scanning()#find qr_code and insert data to db
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
-        print("hi")
+        sql_delete(3)
     elif option == '4':
-        initing()
+        sql_initing()
     else:
         print("[INFO] program exiting...")
         return 1
@@ -88,6 +102,3 @@ if __name__ == "__main__":
         input()
 
     conn.close()
-
-
-    
