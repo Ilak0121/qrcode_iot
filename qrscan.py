@@ -25,14 +25,13 @@ def sql_insert(name, date_limit, weight, company=None):
     conn.commit()
     conn.close()
 
-def qr_scanning():
+def qr_scanning(stream):
     
     qrData =set()
 
     print("[INFO] starting video stream...")
 
     #initialize the video stream and allow the camera sensor to warm up
-    stream = VideoStream(0).start()
     time.sleep(2.0)
 
 
@@ -62,7 +61,10 @@ def qr_scanning():
     tuples=[] # list data that will have tuples of qr_code data
 
     for lists in listData:
-        tuples.append(eval(lists)) #making string to tuple
+        try:
+            tuples.append(eval(lists)) #making string to tuple
+        except:
+            print("wrong qr code data")
 
     #data inserting to database
     for i in range(len(tuples)):
@@ -77,7 +79,8 @@ def qr_scanning():
     print("[INFO] quiting...")
     print("\n[INFO] sql update finished [press 'Enter' to 'continue']...")
     cv2.destroyAllWindows()
-    stream.stop()
 
 if __name__ == "__main__":
-    qr_scanning()
+    stream = VideoStream(0).start()
+    qr_scanning(stream)
+    stream.stop()

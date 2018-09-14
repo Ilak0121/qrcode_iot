@@ -1,1 +1,3 @@
 db synchronizing
+
+bug fax when handmade function did

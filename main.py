@@ -1,3 +1,4 @@
+from imutils.video import VideoStream
 import qrscan
 import pymysql
 import os
@@ -47,11 +48,11 @@ def sql_update():
         index = input("input 'index' want to change >> ")
         col = input("input 'Column name' want to change >> ")
         data = input("input 'value' want to change >> ")
+        data ="'"+data+"'"
         sql = "update qr_data set {} = {} where id={};".format(col,data,index)
         curs.execute(sql)
     except:
         print("wrong input name... exiting...")
-        exit()
     else:
         conn.commit()
         print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
@@ -67,16 +68,16 @@ def sql_delete(index):
     print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
     
 def insert_handmade():
-    #try:
-    name=input("input the 'name' of food >>")
-    date_limit=input("input the 'date_limit' of food >>")
-    weight=input("input the 'weight'of food >>")
-    sql_insert(name, date_limit,weight,"momhand")
-    #except:
-        #print("wrong input name... exiting...")
-        #exit()
-    #else:
-        #print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+    try:
+        name=input("input the 'name' of food >>")
+        date_limit=input("input the 'date_limit' of food >>")
+        weight=input("input the 'weight' of food >>")
+        company = "handmade"
+        sql_insert(name, date_limit,weight,company)
+    except:
+        print("wrong input name... exiting...")
+    else:
+        print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
     
 
 def sql_list():
@@ -108,9 +109,9 @@ def sql_list():
         print(line)
     print("\n[INFO] End of Lists [press 'Enter' to 'continue']...")
 
-def main_process(option):
+def main_process(option,stream):
     if option == '1':
-        qrscan.qr_scanning()#find qr_code and insert data to db
+        qrscan.qr_scanning(stream)#find qr_code and insert data to db
     elif option == '2': #show the lists
         sql_list()
     elif option == '3': #adjust the quantity
@@ -131,14 +132,17 @@ if __name__ == "__main__":
     passwd = readpasswd()
     conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
     curs = conn.cursor()
+    
+    stream = VideoStream(0).start()
 
     while True:
         os.system('clear')
         option_print()
         option = input("select option('Enter' to close)>> ")
-        result = main_process(option)    
+        result = main_process(option,stream)    
         if result == 1:
             break
         input()
 
     conn.close()
+    stream.stop()
