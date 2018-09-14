@@ -17,11 +17,12 @@ def option_print():
     print("| 1.Start the scanning                       |")
     print("| 2.List of stocks                           |")
     print("| 3.Adjust the quantity                      |")
-    print("| 4.Options of recipe                        |")
+    print("| 4.Insert handmade food.                    |")
+    print("| 5.Delete stock data.                       |")
     print("-------------still developing-----------------")
     print("----------------------------------------------")
-    print("| 5.check the nutrition balance of owner     |")
-    print("| 6.Possible Recipes                         |")
+    print("| 6.check the nutrition balance of owner     |")
+    print("| 7.Possible Recipes                         |")
     print("----------------------------------------------")
 
 def sql_initing(): 
@@ -31,14 +32,21 @@ def sql_initing():
     curs.execute(sql)
     conn.commit()
 
+def sql_insert(name, date_limit, weight, company=None):
+    sql =  "insert into qr_data(Name, Date_limit,Weight,Company) values(%s,%s,%s,%s)"
+    curs.execute(sql,(name,date_limit,weight,company))
+    conn.commit()
+    conn.close()
+    print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+
 def sql_update():
-    os.system('clear')
     sql_list()
     print("\n-----------------------------------------------------------")
     try:
-        index = input("input index want to change >> ")
-        col = input("input name want to change >> ")
-        data = input("value want to change >> ")
+        print("If you want to change quantity, you have to input data correctly.\n")
+        index = input("input 'index' want to change >> ")
+        col = input("input 'Column name' want to change >> ")
+        data = input("input 'value' want to change >> ")
         sql = "update qr_data set {} = {} where id={};".format(col,data,index)
         curs.execute(sql)
     except:
@@ -46,6 +54,7 @@ def sql_update():
         exit()
     else:
         conn.commit()
+        print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
 
 def sql_delete(index):
     sql = "delete from qr_data where id={};".format(index)
@@ -55,7 +64,19 @@ def sql_delete(index):
         conn.commit()
 
     sql_initing()
-
+    print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+    
+def insert_handmade():
+    #try:
+    name=input("input the 'name' of food >>")
+    date_limit=input("input the 'date_limit' of food >>")
+    weight=input("input the 'weight'of food >>")
+    sql_insert(name, date_limit,weight,"momhand")
+    #except:
+        #print("wrong input name... exiting...")
+        #exit()
+    #else:
+        #print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
     
 
 def sql_list():
@@ -85,6 +106,7 @@ def sql_list():
                 line = line + str(row[i])+"/ "
 
         print(line)
+    print("\n[INFO] End of Lists [press 'Enter' to 'continue']...")
 
 def main_process(option):
     if option == '1':
@@ -93,13 +115,14 @@ def main_process(option):
         sql_list()
     elif option == '3': #adjust the quantity
         sql_update()
-    elif option == '4':
-        sql_initing()
-    elif option == '11':
-        index = input("index>>")
+    elif option == '4': #insert handmade food.
+        insert_handmade()
+    elif option == '5': #delete stock data.
+        sql_list()
+        index = input("input 'index' want to delete>>")
         sql_delete(index)
     else:
-        print("[INFO] program exiting...")
+        print("\n[INFO] program exiting...")
         return 1
     return 0
 

@@ -75,6 +75,7 @@ def qr_scanning():
             sql_insert(tuples[i][0],tuples[i][1],tuples[i][2],tuples[i][3])
 
     print("[INFO] quiting...")
+    print("\n[INFO] sql update finished [press 'Enter' to 'continue']...")
     cv2.destroyAllWindows()
     stream.stop()
 
