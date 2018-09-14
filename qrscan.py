@@ -8,6 +8,7 @@ import cv2
 import pymysql
 import os
 import sys
+from dbbackup import backup #personal module
 
 def readpasswd():
     f = open("./pass.txt","r")
@@ -24,6 +25,7 @@ def sql_insert(name, date_limit, weight, company=None):
     curs.execute(sql,(name,date_limit,weight,company))
     conn.commit()
     conn.close()
+    backup()
 
 def qr_scanning(stream):
     

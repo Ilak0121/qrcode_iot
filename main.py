@@ -3,6 +3,7 @@ import qrscan
 import pymysql
 import os
 import sys
+from dbbackup import backup #personal module
 
 def readpasswd():
     f = open("./pass.txt",'r')
@@ -39,6 +40,7 @@ def sql_insert(name, date_limit, weight, company=None):
     conn.commit()
     conn.close()
     print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+    backup()
 
 def sql_update():
     sql_list()
@@ -56,6 +58,7 @@ def sql_update():
     else:
         conn.commit()
         print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+        backup()
 
 def sql_delete(index):
     sql = "delete from qr_data where id={};".format(index)
@@ -66,6 +69,7 @@ def sql_delete(index):
 
     sql_initing()
     print("\n[INFO] sql update finished..[press 'Enter' to 'continue']...")
+    backup()
     
 def insert_handmade():
     try:
