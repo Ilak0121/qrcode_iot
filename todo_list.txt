@@ -1,3 +1,4 @@
-db synchronizing
+1. server file change monitoring program
+2. imshow window property up
 
-bug fax when handmade function did
+
