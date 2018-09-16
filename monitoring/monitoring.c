@@ -6,7 +6,7 @@
 #include<sys/types.h>
 #include<sys/stat.h>
 
-int main(){
+int monitoring(){
     char Filepath[10];
     time_t* time;
     char buf1[100]={0,};
@@ -42,6 +42,7 @@ int main(){
     if(strcmp(buf1,buf2)){
         printf("diff!!\n");
         fprintf(fp,"%s",buf2);
+        system("./load");
     }else{
         printf("same!!\n");
         fprintf(fp,"%s",buf2);
@@ -49,5 +50,12 @@ int main(){
             
     if(fclose(fp))
         perror("so sad\n");
+    return 0;
+}
+int main(){
+    while(1){
+        monitoring();
+        delay(10000);//monitoring once at 10 sec.
+    }
     return 0;
 }
