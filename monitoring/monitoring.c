@@ -21,7 +21,7 @@ int monitoring(){
         fprintf(stdout,"log.txt open error");
     }else{ 
         fgets(buf1,100,fp);
-        printf("buf1 : %s",buf1);
+        //printf("buf1 : %s",buf1);
     }
     fclose(fp);//read file stream close
 
@@ -36,15 +36,15 @@ int monitoring(){
         time = (time_t *)&FileAttrib.st_atime;
         time = (time_t *)localtime(time);
         strcpy(buf2,asctime(time));
-        printf("buf2 : %s",buf2);
+        //printf("buf2 : %s",buf2);
     }
 
     if(strcmp(buf1,buf2)){
-        printf("diff!!\n");
+        //printf("diff!!\n");
         fprintf(fp,"%s",buf2);
         system("./load");
     }else{
-        printf("same!!\n");
+        //printf("same!!\n");
         fprintf(fp,"%s",buf2);
     }
             
@@ -55,7 +55,7 @@ int monitoring(){
 int main(){
     while(1){
         monitoring();
-        delay(10000);//monitoring once at 10 sec.
+        sleep(5);//monitoring once at 10 sec.
     }
     return 0;
 }
