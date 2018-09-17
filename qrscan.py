@@ -55,6 +55,7 @@ def qr_scanning(stream):
 
 
         cv2.imshow("Barcode Scanner",frame)
+        #cv2.moveWindow("Barcode Scanner",100,100)
         key = cv2.waitKey(1) &0xFF
         if key == ord("q"):
             break

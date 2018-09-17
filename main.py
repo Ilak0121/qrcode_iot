@@ -4,6 +4,7 @@ import pymysql
 import os
 import sys
 from dbbackup import backup #personal module
+#import subprocess
 
 def readpasswd():
     f = open("./pass.txt",'r')
@@ -109,7 +110,6 @@ def sql_list():
                 line = str(row[i])+line
             else:
                 line = line + str(row[i])+"/ "
-
         print(line)
     print("\n[INFO] End of Lists [press 'Enter' to 'continue']...")
 
@@ -132,13 +132,14 @@ def main_process(option,stream):
     return 0
 
 if __name__ == "__main__":
+    #cmd="resize -s 15 90"
+    #result1 = subprocess.check_output(cmd,shell=True,stderr=subprocess.STDOUT)
     #connecting to mysql
     passwd = readpasswd()
     conn = pymysql.connect(host='localhost',user=passwd[0][:-1],password=passwd[1][:-1],db='qr_data',charset='utf8')
     curs = conn.cursor()
-    
     stream = VideoStream(0).start()
-
+    
     while True:
         os.system('clear')
         option_print()
@@ -147,6 +148,5 @@ if __name__ == "__main__":
         if result == 1:
             break
         input()
-
     conn.close()
     stream.stop()
